@@ -12,6 +12,23 @@ pip3 install wheel setuptools Adafruit_MotorHat
 pip3 install -U wstool
 ```
 
+```
+colcon build
+. install/setup.bash
+ros2 run nanosaur_hardware nanosaur
+
+sudo apt-get install ros-eloquent-teleop-twist-keyboard
+
+ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 1.8}}"
+
+
+mkdir -p ~/ros2_ws/src
+cd ~/ros2_ws/src
+cd ../
+colcon build
+
+```
+
 ## oled test
 
 ```
