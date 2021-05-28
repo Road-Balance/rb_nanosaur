@@ -7,6 +7,10 @@
 
 ---
 
+```
+pip3 install wheel setuptools Adafruit_MotorHat
+pip3 install -U wstool
+```
 
 # Creator
 
