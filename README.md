@@ -10,6 +10,14 @@
 ```
 pip3 install wheel setuptools Adafruit_MotorHat
 pip3 install -U wstool
+
+cd /opt && \
+    git clone https://github.com/dusty-nv/jetson-utils.git && \
+    mkdir -p jetson-utils/build && cd jetson-utils/build && \
+    cmake ../ && \
+    make -j$(nproc) && \
+    make install && \
+    ldconfig
 ```
 
 ```
