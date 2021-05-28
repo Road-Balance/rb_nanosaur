@@ -24,7 +24,7 @@
 
 import time
 
-import Adafruit_SSD1306   # This is the driver chip for the Adafruit PiOLED
+import Adafruit_SSD1306  # This is the driver chip for the Adafruit PiOLED
 
 from PIL import Image
 from PIL import ImageDraw
@@ -34,14 +34,20 @@ import subprocess
 
 
 def get_network_interface_state(interface):
-    return subprocess.check_output('cat /sys/class/net/%s/operstate' % interface, shell=True).decode('ascii')[:-1]
+    return subprocess.check_output(
+        "cat /sys/class/net/%s/operstate" % interface, shell=True
+    ).decode("ascii")[:-1]
 
 
 def get_ip_address(interface):
-    if get_network_interface_state(interface) == 'down':
+    if get_network_interface_state(interface) == "down":
         return None
-    cmd = "ifconfig %s | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'" % interface
-    return subprocess.check_output(cmd, shell=True).decode('ascii')[:-1]
+    cmd = (
+        "ifconfig %s | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
+        % interface
+    )
+    return subprocess.check_output(cmd, shell=True).decode("ascii")[:-1]
+
 
 # Return a string representing the percentage of CPU in use
 
@@ -52,6 +58,7 @@ def get_cpu_usage():
     CPU = subprocess.check_output(cmd, shell=True)
     return CPU
 
+
 # Return a float representing the percentage of GPU in use.
 # On the Jetson Nano, the GPU is GPU0
 
@@ -60,7 +67,7 @@ def get_gpu_usage():
     GPU = 0.0
     with open("/sys/devices/gpu.0/load", encoding="utf-8") as gpu_file:
         GPU = gpu_file.readline()
-        GPU = int(GPU)/10
+        GPU = int(GPU) / 10
     return GPU
 
 
@@ -79,7 +86,7 @@ disp.display()
 # Make sure to create image with mode '1' for 1-bit color.
 width = disp.width
 height = disp.height
-image = Image.new('1', (width, height))
+image = Image.new("1", (width, height))
 
 # Get drawing object to draw on image.
 draw = ImageDraw.Draw(image)
@@ -91,7 +98,7 @@ draw.rectangle((0, 0, width, height), outline=0, fill=0)
 # First define some constants to allow easy resizing of shapes.
 padding = -2
 top = padding
-bottom = height-padding
+bottom = height - padding
 # Move left to right keeping track of the current x position for drawing shapes.
 x = 0
 
@@ -106,13 +113,12 @@ while True:
     # Shell scripts for system monitoring from here : https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
     cmd = "free -m | awk 'NR==2{printf \"Mem:  %.0f%% %s/%s M\", $3*100/$2, $3,$2 }'"
     MemUsage = subprocess.check_output(cmd, shell=True)
-    cmd = "df -h | awk '$NF==\"/\"{printf \"Disk: %d/%dGB %s\", $3,$2,$5}'"
+    cmd = 'df -h | awk \'$NF=="/"{printf "Disk: %d/%dGB %s", $3,$2,$5}\''
     Disk = subprocess.check_output(cmd, shell=True)
 
     # Print the IP address
     # Two examples here, wired and wireless
-    draw.text((x, top),       "eth0: " +
-              str(get_ip_address('eth0')),  font=font, fill=255)
+    draw.text((x, top), "eth0: " + str(get_ip_address("eth0")), font=font, fill=255)
     # draw.text((x, top+8),     "wlan0: " + str(get_ip_address('wlan0')), font=font, fill=255)
 
     # Alternate solution: Draw the GPU usage as text
@@ -120,24 +126,27 @@ while True:
     # We draw the GPU usage as a bar graph
     string_width, string_height = font.getsize("GPU:  ")
     # Figure out the width of the bar
-    full_bar_width = width-(x+string_width)-1
+    full_bar_width = width - (x + string_width) - 1
     gpu_usage = get_gpu_usage()
     # Avoid divide by zero ...
     if gpu_usage == 0.0:
         gpu_usage = 0.001
-    draw_bar_width = int(full_bar_width*(gpu_usage/100))
-    draw.text((x, top+8),     "GPU:  ", font=font, fill=255)
-    draw.rectangle((x+string_width, top+12, x+string_width +
-                    draw_bar_width, top+14), outline=1, fill=1)
+    draw_bar_width = int(full_bar_width * (gpu_usage / 100))
+    draw.text((x, top + 8), "GPU:  ", font=font, fill=255)
+    draw.rectangle(
+        (x + string_width, top + 12, x + string_width + draw_bar_width, top + 14),
+        outline=1,
+        fill=1,
+    )
 
     # Show the memory Usage
-    draw.text((x, top+16), str(MemUsage.decode('utf-8')), font=font, fill=255)
+    draw.text((x, top + 16), str(MemUsage.decode("utf-8")), font=font, fill=255)
     # Show the amount of disk being used
-    draw.text((x, top+25), str(Disk.decode('utf-8')), font=font, fill=255)
+    draw.text((x, top + 25), str(Disk.decode("utf-8")), font=font, fill=255)
 
     # Display image.
     # Set the SSD1306 image to the PIL image we have made, then dispaly
     disp.image(image)
     disp.display()
     # 1.0 = 1 second; The divisor is the desired updates (frames) per second
-    time.sleep(1.0/4)
+    time.sleep(1.0 / 4)
