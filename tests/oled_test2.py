@@ -118,30 +118,13 @@ while True:
     # Draw a black filled box to clear the image.
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
 
-    x = 0
+    x = 20
     shape_width = 20
     padding = 2
 
-    # Draw an ellipse.
-    draw.ellipse((x, top, x + shape_width, bottom), outline=255, fill=0)
-    x += shape_width + padding
-    # Draw a rectangle.
-    draw.rectangle((x, top, x + shape_width, bottom), outline=255, fill=0)
-    x += shape_width + padding
-    # Draw a triangle.
-    draw.polygon(
-        [(x, bottom), (x + shape_width / 2, top), (x + shape_width, bottom)],
-        outline=255,
-        fill=0,
-    )
-    x += shape_width + padding
-    # Draw an X.
-    draw.line((x, bottom, x + shape_width, top), fill=255)
-    draw.line((x, top, x + shape_width, bottom), fill=255)
-    x += shape_width + padding
 
-    draw.text((x, top), "Hello", font=font, fill=255)
-    draw.text((x, top + 20), "World!", font=font, fill=255)
+    draw.text((x, top), "I am", font=font, fill=255)
+    draw.text((x+50, top + 20), "AI!", font=font, fill=255)
 
     # Display image.
     # Set the SSD1306 image to the PIL image we have made, then dispaly

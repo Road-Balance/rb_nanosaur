@@ -44,7 +44,7 @@ class Display:
         self.i2c_address = i2c_address
         # 128x32 display with hardware I2C:
         # setting gpio to 1 is hack to avoid platform detection
-        self.disp = Adafruit_SSD1306.SSD1306_128_64(rst=None, i2c_bus=1, gpio=1, i2c_address=i2c_address)
+        self.disp = Adafruit_SSD1306.SSD1306_128_32(rst=None, i2c_bus=0, gpio=1, i2c_address=i2c_address)
         # Init display
         self.disp.begin()
         # Clear display.
