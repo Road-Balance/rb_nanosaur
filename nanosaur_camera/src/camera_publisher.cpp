@@ -28,16 +28,23 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <jetson-utils/gstCamera.h>
 
-#include <camera_info_manager/camera_info_manager.hpp>
 #include <chrono>
 #include <functional>
 #include <memory>
+
+#include "rclcpp/rclcpp.hpp"
+
+#include <camera_info_manager/camera_info_manager.hpp>
+
 #include <sensor_msgs/msg/image.hpp>
 
+
+#include <jetson-utils/gstCamera.h>
+
+
 #include "nanosaur_camera/image_converter.h"
-#include "rclcpp/rclcpp.hpp"
+
 
 using namespace std::chrono_literals;
 
