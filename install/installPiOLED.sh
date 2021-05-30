@@ -14,5 +14,9 @@ sudo apt install python3-pip python3-pil -y
 # Note that Adafruit-SSD1306 library is deprecated; newer versions of
 # the library use CircuitPython
 pip3 install Adafruit-SSD1306
+
+pip3 install Adafruit_MotorHat
+pip3 install setuptools
+pip3 install pillow
 # We should be able to access the PiOLED now
 # Note that we may have to reboot for the i2c change to take effect
