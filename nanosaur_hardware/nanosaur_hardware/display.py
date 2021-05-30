@@ -32,6 +32,7 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 
+import subprocess
 
 class Display:
 
@@ -61,9 +62,9 @@ class Display:
         self.font = ImageFont.load_default()
         # Draw some shapes.
         # First define some constants to allow easy resizing of shapes.
-        padding = 2
+        padding = -2
         self.top = padding
-        self.bottom = self.height-padding
+        self.bottom = self.height - padding
         # Move left to right keeping track of the current x position for drawing shapes.
         self.x = 0
         # Init display timer
@@ -71,34 +72,74 @@ class Display:
         # Configure all motors to stop at program exit
         atexit.register(self._close)
 
+    def get_network_interface_state(self, interface):
+        return subprocess.check_output('cat /sys/class/net/%s/operstate' % interface, shell=True).decode('ascii')[:-1]
+
+    def get_ip_address(self, interface):
+        if self.get_network_interface_state(interface) == 'down':
+            return None
+        cmd = "ifconfig %s | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'" % interface
+        return subprocess.check_output(cmd, shell=True).decode('ascii')[:-1]
+
+    # Return a string representing the percentage of CPU in use
+    def get_cpu_usage(self, ):
+        # Shell scripts for system monitoring from here : https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
+        cmd = "top -bn1 | grep load | awk '{printf \"CPU Load: %.2f\", $(NF-2)}'"
+        CPU = subprocess.check_output(cmd, shell=True)
+        return CPU
+
+    # Return a float representing the percentage of GPU in use.
+    # On the Jetson Nano, the GPU is GPU0
+    def get_gpu_usage(self, ):
+        GPU = 0.0
+        with open("/sys/devices/gpu.0/load", encoding="utf-8") as gpu_file:
+            GPU = gpu_file.readline()
+            GPU = int(GPU)/10
+        return GPU  
+
     def display_callback(self):
         # Draw a black filled box to clear the image.
         self.draw.rectangle((0, 0, self.width, self.height), outline=0, fill=0)
-        # Draw text
-        # self.draw.text((self.x, self.top), f"ID: {self.i2c_address}", font=self.font, fill=255)
 
-        self.x = 0
-        shape_width = 20
-        padding = 2
-        # Draw an ellipse.
-        self.draw.ellipse((self.x, self.top , self.x+shape_width, self.bottom), outline=255, fill=0)
-        self.x += shape_width+padding
-        # Draw a rectangle.
-        self.draw.rectangle((self.x, self.top, self.x+shape_width, self.bottom), outline=255, fill=0)
-        self.x += shape_width+padding
-        # Draw a triangle.
-        self.draw.polygon([(self.x, self.bottom), (self.x+shape_width/2, self.top), (self.x+shape_width, self.bottom)], outline=255, fill=0)
-        self.x += shape_width+padding
-        # Draw an X.
-        self.draw.line((self.x, self.bottom, self.x+shape_width, self.top), fill=255)
-        self.draw.line((self.x, self.top, self.x+shape_width, self.bottom), fill=255)
-        self.x += shape_width+padding
+        # Shell scripts for system monitoring from here : https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
+        cmd = "free -m | awk 'NR==2{printf \"Mem:  %.0f%% %s/%s M\", $3*100/$2, $3,$2 }'"
+        MemUsage = subprocess.check_output(cmd, shell=True)
+        cmd = 'df -h | awk \'$NF=="/"{printf "Disk: %d/%dGB %s", $3,$2,$5}\''
+        Disk = subprocess.check_output(cmd, shell=True)
 
-        self.draw.text((self.x, self.top),    'Hello',  font=self.font, fill=255)
-        self.draw.text((self.x, self.top+20), 'World!', font=self.font, fill=255)
+        # Print the IP address
+        # Two examples here, wired and wireless
+        self.draw.text((self.x, self.top), "eth0: " + str(self.get_ip_address("eth0")), font=self.font, fill=255)
+        # draw.text((x, top+8),     "wlan0: " + str(get_ip_address('wlan0')), font=font, fill=255)
 
+        # Alternate solution: Draw the GPU usage as text
+        # draw.text((x, top+8),     "GPU:  " +"{:3.1f}".format(GPU)+" %", font=font, fill=255)
+        # We draw the GPU usage as a bar graph
+        string_width, string_height = self.font.getsize("GPU:  ")
+        # Figure out the width of the bar
+        full_bar_width = self.width - (self.x + string_width) - 1
+        gpu_usage = self.get_gpu_usage()
+        # Avoid divide by zero ...
+        if gpu_usage == 0.0:
+            gpu_usage = 0.001
+        
+        draw_bar_width = int(full_bar_width * (gpu_usage / 100))
+        self.draw.text((self.x, self.top + 8), "GPU:  ", font=self.font, fill=255)
+        self.draw.rectangle(
+            (self.x + string_width, self.top + 12, self.x + string_width + self.draw_bar_width, self.top + 14),
+            outline=1,
+            fill=1,
+        )
+
+        # Show the memory Usage
+        self.draw.text((self.x, self.top + 16), str(MemUsage.decode("utf-8")), font=self.font, fill=255)
+        # Show the amount of disk being used
+        self.draw.text((self.x, self.top + 25), str(Disk.decode("utf-8")), font=self.font, fill=255)
+
+        # Display image.
+        # Set the SSD1306 image to the PIL image we have made, then dispaly
         self.disp.image(self.image)
-        self.disp.display()
+        self.disp.display()  
     
     def _close(self):
         # Draw a black filled box to clear the image.

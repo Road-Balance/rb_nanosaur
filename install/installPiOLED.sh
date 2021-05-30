@@ -16,7 +16,3 @@ sudo apt install python3-pip python3-pil -y
 pip3 install Adafruit-SSD1306
 # We should be able to access the PiOLED now
 # Note that we may have to reboot for the i2c change to take effect
-
-
-
-
