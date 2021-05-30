@@ -126,7 +126,7 @@ class Display:
         draw_bar_width = int(full_bar_width * (gpu_usage / 100))
         self.draw.text((self.x, self.top + 8), "GPU:  ", font=self.font, fill=255)
         self.draw.rectangle(
-            (self.x + string_width, self.top + 12, self.x + string_width + self.draw_bar_width, self.top + 14),
+            (self.x + string_width, self.top + 12, self.x + string_width + draw_bar_width, self.top + 14),
             outline=1,
             fill=1,
         )

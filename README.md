@@ -109,8 +109,13 @@ Swap:          4095           0        4095
 
 
 ```
-colcon build --symlink-install --packages-select nanosaur_hardware
+sudo apt-get install ros-eloquent-teleop-twist-keyboard
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
+
+colcon build --symlink-install --packages-select nanosaur_hardware
+. install\setup.bash
+ros2 run nanosaur_hardware nanosaur
 
 ```
 
