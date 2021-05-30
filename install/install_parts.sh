@@ -17,6 +17,9 @@ pip3 install Adafruit-SSD1306
 
 pip3 install Adafruit_MotorHat
 pip3 install setuptools
-pip3 install pillow
+pip3 install wheel
+
+pip3 install -U wstool
+
 # We should be able to access the PiOLED now
 # Note that we may have to reboot for the i2c change to take effect
