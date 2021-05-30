@@ -107,6 +107,13 @@ Mem:           3956         865        2551          29         539        2907
 Swap:          4095           0        4095
 ```
 
+
+```
+colcon build --symlink-install --packages-select nanosaur_hardware
+
+
+```
+
 # Creator
 
 * Design by Yoon Yohan
