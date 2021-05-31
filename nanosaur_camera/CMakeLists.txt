@@ -19,10 +19,11 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
-find_package(camera_info_manager REQUIRED)
+find_package(camera_info_manager REQUIRED COMPONENTS )
 
 find_package(jetson-utils REQUIRED)
 find_package(CUDA REQUIRED)
+find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
 # message("-- CUDA version: ${CUDA_VERSION}")

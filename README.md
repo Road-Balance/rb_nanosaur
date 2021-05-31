@@ -30,10 +30,10 @@ sudo apt-get install ros-eloquent-teleop-twist-keyboard
 ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 1.8}}"
 
 
-mkdir -p ~/ros2_ws/src
-cd ~/ros2_ws/src
-cd ../
-colcon build
+$ mkdir -p ~/ros2_ws/src
+$ cd ~/ros2_ws/src
+$ cd ../
+$ colcon build
 
 ```
 

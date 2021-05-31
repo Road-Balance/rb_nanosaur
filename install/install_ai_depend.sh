@@ -16,11 +16,6 @@ sudo ldconfig
 pip3 install wheel
 pip3 install -U wstool
 
-# mkdir -p ~/ros2_ws/src
-# cd ~/ros2_ws/src
-# cd ../
-# colcon build
-
 sudo apt-get update && \
     apt-get install libjpeg-dev zlib1g-dev python3-pip -y && \
     rm -rf /var/lib/apt/lists/*
