@@ -8,7 +8,6 @@
     <img src="./images/nanosaur.gif" width="400" />
 </p>
 
----
 
 ## System information
 
@@ -33,6 +32,14 @@
 ├── README.md
 └── STL
 ```
+
+### Future Work
+
+- [ ] Camera Processig with DeepStream + ROS 
+- [ ] Streaming Through 5G Based WebRTC
+- [ ] Stereo Camera & ReDesign
+- [ ] ROS2 Foxy with Docker
+- [ ] Reactive Eyes Control
 
 ## Installation
 
