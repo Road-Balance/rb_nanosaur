@@ -1,5 +1,8 @@
 # Nanosaur by Road Balance
-| 🦕 The smallest NVIDIA Jetson dinosaur robot 🦖 - Original project from [Raffaello Bonghi](https://nanosaur.ai/)'s Nanosaur, Reborn by Road Balance
+| 🦕 The smallest NVIDIA Jetson dinosaur robot 🦖 - Reborn by Road Balance for education.
+
+## Original project from [Raffaello Bonghi](https://nanosaur.ai/)'s [Nanosaur](https://github.com/rnanosaur/nanosaur)
+
 
 <p align="center">
     <img src="./images/nanosaur.gif" width="400" />
