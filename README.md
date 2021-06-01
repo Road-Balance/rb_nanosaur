@@ -1,5 +1,5 @@
 # Nanosaur by Road Balance
-| 🦕 The smallest NVIDIA Jetson dinosaur robot 🦖 - Original project from ![Raffaello Bonghi](https://nanosaur.ai/), Reborn by Road Balance
+| 🦕 The smallest NVIDIA Jetson dinosaur robot 🦖 - Original project from [Raffaello Bonghi](https://nanosaur.ai/)'s Nanosaur, Reborn by Road Balance
 
 <p align="center">
     <img src="./images/nanosaur.gif" width="400" />
@@ -181,5 +181,6 @@ ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 2.0, y: 0.0, z: 0.
 
 # Creator
 
-* Design by Yoon Yohan
-* Progamming by Kimsooyoung
+* Original Project from [rbonghi](https://github.com/rbonghi)
+* Re-Design by Yoon Yohan
+* Re-Progamming by Kimsooyoung
