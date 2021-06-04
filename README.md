@@ -192,5 +192,5 @@ ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 2.0, y: 0.0, z: 0.
 # Creator
 
 * Original Project from [rbonghi](https://github.com/rbonghi)
-* Re-Design by Yoon Yohan
-* Re-Progamming by Kimsooyoung
+* Re-Design by [Yoon Yohan](https://github.com/YyohanY)
+* Re-Progamming by [Kimsooyoung](https://github.com/kimsooyoung)
