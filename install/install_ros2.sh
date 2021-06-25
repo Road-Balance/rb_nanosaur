@@ -43,3 +43,4 @@ sudo apt-get install -y python3-colcon-common-extensions
 
 sudo apt-get install ros-eloquent-turtlesim
 sudo apt-get install ros-eloquent-teleop-twist-keyboard
+sudo apt-get install ros-eloquent-camera-info-manager
